@@ -18,9 +18,14 @@
         <md-radio-button value="circle">Circle</md-radio-button>
         <md-radio-button value="sqlattice">Square Lattice</md-radio-button>
         <md-radio-button value="trilattice">Triangular Lattice</md-radio-button>
-        <md-radio-button value="clique2-bridge1">Bridged Cliques</md-radio-button>
-        <md-radio-button value="star2-bridge1">Bridged Stars</md-radio-button>
-        <md-radio-button value="lattice2-bridge1">Bridged Lattice</md-radio-button>
+        <md-radio-button value="clique2-bridge1">2 Cliques + Bridge</md-radio-button>
+        <md-radio-button value="clique3-bridge1">3 Cliques + Bridges</md-radio-button>
+        <md-radio-button value="clique5-bridge1">5 Cliques + Bridges</md-radio-button>
+        <md-radio-button value="clique2-bridge5">2 Cliques + 5 bridges</md-radio-button>
+        <md-radio-button value="star2-bridge">2 Stars + Bridge</md-radio-button>
+        <md-radio-button value="star3-bridge">3 Stars + Bridges</md-radio-button>
+        <md-radio-button value="star5-bridge">5 Stars + Bridges</md-radio-button>
+        <md-radio-button value="lattice2-bridge">2 Lattices + Bridge</md-radio-button>
         <md-radio-button value="SBM2-99-999">2 groups Pin=99.999% Pout=0.001%</md-radio-button>
         <md-radio-button value="SBM2-99-99">2 groups Pin=99.99% Pout=0.01%</md-radio-button>
         <md-radio-button value="SBM2-99-9">2 groups Pin=99.9% Pout=0.1%</md-radio-button>
@@ -53,7 +58,8 @@
 
     </md-content>
   </div>
-  <div layout="column" flex style="background-color: #FFF">
-    {{generator}}
+  <div layout="row" layout-align="center center" flex style="background-color: #FFF">
+    <div ng-if="g">The network has {{g.order}} nodes and {{g.size}} edges</div>
+    <div ng-if="!g">Generating network...</div>
   </div>
 </div>
