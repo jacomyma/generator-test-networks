@@ -89,6 +89,121 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         return generateBridgedLattices(min_order, 2)
         break;
 
+      case 'random-75':
+        var p_in = 0.75
+        return generateSBM(min_order, 1, p_in, 0)
+        break;
+
+      case 'random-50':
+        var p_in = 0.50
+        return generateSBM(min_order, 1, p_in, 0)
+        break;
+
+      case 'random-25':
+        var p_in = 0.25
+        return generateSBM(min_order, 1, p_in, 0)
+        break;
+
+      case 'random-5':
+        var p_in = 0.05
+        return generateSBM(min_order, 1, p_in, 0)
+        break;
+
+      case 'random-1':
+        var p_in = 0.01
+        return generateSBM(min_order, 1, p_in, 0)
+        break;
+
+      case 'SBM2-99-999':
+        var p_in = 0.99999
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-99-99':
+        var p_in = 0.9999
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-99-9':
+        var p_in = 0.999
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-99':
+        var p_in = 0.99
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-95':
+        var p_in = 0.95
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-90':
+        var p_in = 0.90
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-80':
+        var p_in = 0.80
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-70':
+        var p_in = 0.70
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM2-60':
+        var p_in = 0.60
+        return generateSBM(min_order, 2, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-99-999':
+        var p_in = 0.99999
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-99-99':
+        var p_in = 0.9999
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-99-9':
+        var p_in = 0.999
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-99':
+        var p_in = 0.99
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-95':
+        var p_in = 0.95
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-90':
+        var p_in = 0.90
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-80':
+        var p_in = 0.80
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-70':
+        var p_in = 0.70
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
+      case 'SBM5-60':
+        var p_in = 0.60
+        return generateSBM(min_order, 5, p_in, 1-p_in)
+        break;
+
       default:
         alert("This generator is not yet implemented")
         break;
@@ -316,6 +431,43 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       for (j=0; j<l; j++) {
         g.addEdge('l'+l+'r0c0', 'l'+j+'r0c0')
       }
+    }
+
+    return g
+  }
+
+  function generateSBM(min_order, block_count, p_in, p_out) {
+    var b, c, i, j
+    var g = new Graph()
+    var nodes_per_block = Math.ceil(min_order / block_count)
+    for (b=0; b<block_count; b++) {
+      for (i=0; i<nodes_per_block; i++) {
+        g.addNode('b'+b+'n'+i, {
+          type: 'block-'+b,
+          block: b
+        })
+      }
+    }
+    for (b=0; b<block_count; b++) {
+      // IN
+      for (i=0; i<nodes_per_block; i++) {
+        for (j=0; j<i; j++) {
+          if (Math.random() < p_in) {
+            g.addEdge('b'+b+'n'+i, 'b'+b+'n'+j)
+          }
+        }
+      }
+      for (c=0; c<b; c++) {
+        // OUT
+        for (i=0; i<nodes_per_block; i++) {
+          for (j=0; j<i; j++) {
+            if (Math.random() < p_out) {
+              g.addEdge('b'+b+'n'+i, 'b'+c+'n'+j)
+            }
+          }
+        }
+      }
+      
     }
 
     return g

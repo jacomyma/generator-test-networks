@@ -124,6 +124,11 @@ config(['$routeProvider', function($routeProvider) {
 
         graph.nodes().forEach(function(node) {
 
+          // Labels from ids
+          graph.nodes().forEach(function(nid){
+            graph.setNodeAttribute(nid, 'label', nid)
+          })
+
           // Color
           graph.updateNodeAttribute(node, 'color', function(color) {
             if (CATEGORY)
@@ -216,7 +221,6 @@ config(['$routeProvider', function($routeProvider) {
         var rescaleButton = document.getElementById('rescale-button');
 
         rescaleButton.onclick = function() {
-  
           camera.animatedReset();
         };
 
