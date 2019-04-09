@@ -58,8 +58,15 @@
 
     </md-content>
   </div>
-  <div layout="row" layout-align="center center" flex style="background-color: #FFF">
-    <div ng-if="g">The network has {{g.order}} nodes and {{g.size}} edges</div>
+  <div layout="row" flex style="background-color: #FFF">
+    <div layout-fill ng-if="g">
+      <sigma-network
+        layout-fill
+        layout="column"
+        layout-align="center center"
+        g="g"
+      ></sigma-network>
+    </div>
     <div ng-if="!g">Generating network...</div>
   </div>
 </div>
