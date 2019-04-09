@@ -1,1 +1,59 @@
-Hello World! :)
+<div layout="row" layout-fill>
+  <div layout="column" flex style="max-width: 400px;">
+    <md-content layout="column" style="padding:12px">
+
+      <h1>Types of networks</h1>
+
+      <md-input-container>
+        <label>Nodes</label>
+        <input type="number" ng-model="nodes">
+      </md-input-container>
+
+      <md-radio-group ng-model="generator">
+
+        <md-radio-button value="clique">Clique</md-radio-button>
+        <md-radio-button value="stable">Stable</md-radio-button>
+        <md-radio-button value="star">Star</md-radio-button>
+        <md-radio-button value="chain">Chain</md-radio-button>
+        <md-radio-button value="circle">Circle</md-radio-button>
+        <md-radio-button value="sqlattice">Square Lattice</md-radio-button>
+        <md-radio-button value="trilattice">Triangular Lattice</md-radio-button>
+        <md-radio-button value="clique2-bridge1">Bridged Cliques</md-radio-button>
+        <md-radio-button value="star2-bridge1">Bridged Stars</md-radio-button>
+        <md-radio-button value="lattice2-bridge1">Bridged Lattice</md-radio-button>
+        <md-radio-button value="SBM2-99-999">2 groups Pin=99.999% Pout=0.001%</md-radio-button>
+        <md-radio-button value="SBM2-99-99">2 groups Pin=99.99% Pout=0.01%</md-radio-button>
+        <md-radio-button value="SBM2-99-9">2 groups Pin=99.9% Pout=0.1%</md-radio-button>
+        <md-radio-button value="SBM2-99">2 groups Pin=99% Pout=1%</md-radio-button>
+        <md-radio-button value="SBM2-95">2 groups Pin=95% Pout=5%</md-radio-button>
+        <md-radio-button value="SBM2-90">2 groups Pin=90% Pout=10%</md-radio-button>
+        <md-radio-button value="SBM2-80">2 groups Pin=80% Pout=20%</md-radio-button>
+        <md-radio-button value="SBM2-70">2 groups Pin=70% Pout=30%</md-radio-button>
+        <md-radio-button value="SBM2-60">2 groups Pin=60% Pout=40%</md-radio-button>
+        <md-radio-button value="SBM2-50">2 groups Pin=50% Pout=50%</md-radio-button>
+        <md-radio-button value="SBM2-30">2 groups Pin=30% Pout=70%</md-radio-button>
+        <md-radio-button value="SBM2-10">2 groups Pin=10% Pout=90%</md-radio-button>
+        <md-radio-button value="SBM2-1">2 groups Pin=1% Pout=99%</md-radio-button>
+        <md-radio-button value="SBM5-99-999">5 groups Pin=99.999% Pout=0.001%</md-radio-button>
+        <md-radio-button value="SBM5-99-99">5 groups Pin=99.99% Pout=0.01%</md-radio-button>
+        <md-radio-button value="SBM5-99-9">5 groups Pin=99.9% Pout=0.1%</md-radio-button>
+        <md-radio-button value="SBM5-99">5 groups Pin=99% Pout=1%</md-radio-button>
+        <md-radio-button value="SBM5-95">5 groups Pin=95% Pout=5%</md-radio-button>
+        <md-radio-button value="SBM5-90">5 groups Pin=90% Pout=10%</md-radio-button>
+        <md-radio-button value="SBM5-80">5 groups Pin=80% Pout=20%</md-radio-button>
+        <md-radio-button value="SBM5-70">5 groups Pin=70% Pout=30%</md-radio-button>
+        <md-radio-button value="SBM5-60">5 groups Pin=60% Pout=40%</md-radio-button>
+        <md-radio-button value="SBM5-50">5 groups Pin=50% Pout=50%</md-radio-button>
+        <md-radio-button value="SBM5-30">5 groups Pin=30% Pout=70%</md-radio-button>
+        <md-radio-button value="SBM5-10">5 groups Pin=10% Pout=90%</md-radio-button>
+        <md-radio-button value="SBM5-1">5 groups Pin=1% Pout=99%</md-radio-button>
+
+
+      </md-radio-group>
+
+    </md-content>
+  </div>
+  <div layout="column" flex style="background-color: #FFF">
+    {{generator}}
+  </div>
+</div>

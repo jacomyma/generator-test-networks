@@ -14,4 +14,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   var gexf = graphology.library.gexf;
   console.log("Loaded")
 
+  $scope.nodes = 100
+  $scope.generator = 'clique'
+
 }])
