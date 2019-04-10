@@ -531,7 +531,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       for (c=0; c<b; c++) {
         // OUT
         for (i=0; i<nodes_per_block; i++) {
-          for (j=0; j<i; j++) {
+          for (j=0; j<nodes_per_block; j++) {
             if (Math.random() < p_out) {
               g.addEdge('b'+b+'n'+i, 'b'+c+'n'+j)
             }
