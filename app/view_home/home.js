@@ -18,6 +18,9 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   $scope.$watch('generator', function(){
     generateNetwork()
   })
+  $scope.$watch('nodes', function(){
+    generateNetwork()
+  })
 
   function generateNetwork() {
     $scope.g = undefined
