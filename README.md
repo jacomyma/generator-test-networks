@@ -2,6 +2,9 @@
 
 A small static website based on Graphology.
 
+## Demo
+[https://jacomyma.github.io/generator-test-networks/](https://jacomyma.github.io/generator-test-networks/)
+
 ## Install
 
 ### Install the dependencies & build the code
