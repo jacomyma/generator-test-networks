@@ -211,7 +211,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateClique(order) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var i, j
     for (i=0; i<order; i++){
       g.addNode('n'+i, {
@@ -227,7 +227,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateStable(order) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var i, j
     for (i=0; i<order; i++){
       g.addNode('n'+i, {
@@ -240,7 +240,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateStar(order) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     g.addNode('n0', {
       type: 'center'
     })
@@ -257,7 +257,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateChain(order) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var i
     for (i=0; i<order; i++){
       g.addNode('n'+i, {
@@ -273,7 +273,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateCircle(order) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var i
     for (i=0; i<order; i++){
       g.addNode('n'+i, {
@@ -290,7 +290,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateSquareLattice(min_order) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     g.addNode('r0c0', {
       row: 0,
       col: 0
@@ -330,7 +330,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateTriangularLattice(min_order) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     g.addNode('r0c0', {
       row: 0,
       col: 0
@@ -359,7 +359,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateBridgedCliques(min_order, cliques_count, bridges_count) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var nodes_per_clique = Math.ceil( min_order / cliques_count )
     var c, i, j
     for (c=0 ; c<cliques_count ; c++) {
@@ -386,7 +386,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateBridgedStars(min_order, stars_count) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var nodes_per_star = Math.ceil( min_order / stars_count )
     var s, i, j
     for (s=0 ; s<stars_count ; s++) {
@@ -413,7 +413,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
   }
 
   function generateBridgedLattices(min_order, lattice_count) {
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var l, i, j
     for (l=0 ; l<lattice_count ; l++) {
       g.addNode('l'+l+'r0c0', {
@@ -458,7 +458,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
 
   function generateSBM(min_order, block_count, p_in, p_out) {
     var b, c, i, j
-    var g = new Graph()
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     var nodes_per_block = Math.ceil(min_order / block_count)
     for (b=0; b<block_count; b++) {
       for (i=0; i<nodes_per_block; i++) {
@@ -491,7 +491,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
 
     g.setAttribute('creator', 'Generator of test networks')
-    g.setAttribute('name', 'SBM '+block_count+' Blocks Pin='+p_in+' Pout='+p_out+' '+g.order+'n')
+    g.setAttribute('name', 'SBM '+block_count+' Blocks Pin='+(Math.round(1000000*p_in)/1000000)+' Pout='+(Math.round(1000000*p_out)/1000000)+' '+g.order+'n')
     return g
   }
 
