@@ -81,11 +81,12 @@ config(['$routeProvider', function($routeProvider) {
         $timeout(update)
       })
 
-      var layout, renderer
+      var renderer, graph
+      $scope.layout
 
       $scope.$on("$destroy", function(){
-        if (layout) {
-          layout.kill()
+        if ($scope.layout) {
+          $scope.layout.kill()
         }
         if (renderer) {
           renderer.kill()
@@ -120,7 +121,7 @@ config(['$routeProvider', function($routeProvider) {
         var CLONE = false;
 
         // Cloning & decorating
-        var graph = CLONE ? $scope.g.copy() : $scope.g;
+        graph = CLONE ? $scope.g.copy() : $scope.g;
 
         graph.nodes().forEach(function(node) {
 
@@ -182,8 +183,8 @@ config(['$routeProvider', function($routeProvider) {
         var camera = renderer.getCamera();
 
         // Layout
-        layout = new ForceAtlas2Layout(graph, {settings: FA2_SETTINGS});
-        layout.start();
+        $scope.layout = new ForceAtlas2Layout(graph, {settings: FA2_SETTINGS});
+        $scope.layout.start();
 
         // Padding
         document.querySelectorAll('#playground, #playground > #container, #playground > #container > canvas').forEach(function(dom) {
@@ -191,38 +192,27 @@ config(['$routeProvider', function($routeProvider) {
         });
 
         // Buttons
-        var buttons = document.createElement('div');
-        buttons.id = 'buttons';
-        buttons.style.position = 'absolute';
-        buttons.style.left = '0px';
-        buttons.style.top = '0px';
-        buttons.innerHTML = [
-          '<button id="layout-button">Stop Layout</button>',
-          '<button id="rescale-button">Rescale</button>'
-        ].join('');
+        $scope.stopLayout = function() {
+          if ($scope.layout === undefined) { return }
+          $scope.layout.stop()
+        }
 
-        playground.appendChild(buttons);
+        $scope.startLayout = function() {
+          if ($scope.layout === undefined) { return }
+          $scope.layout.start()
+        }
 
-        // Layout interaction
-        var layoutButton = document.getElementById('layout-button');
-
-        layoutButton.onclick = function() {
-          if (layout.running) {
-            layout.stop();
-            layoutButton.innerText = 'Start Layout';
-          }
-          else {
-            layout.start();
-            layoutButton.innerText = 'Stop Layout';
-          }
-        };
-
-        // Camera interaction
-        var rescaleButton = document.getElementById('rescale-button');
-
-        rescaleButton.onclick = function() {
+        $scope.resetCamera = function() {
           camera.animatedReset();
-        };
+        }
+
+        $scope.download = function () {
+          var gexf = graphology.library.gexf;
+          var xml = gexf.write(graph);
+
+          var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
+          saveAs(blob, graph.getAttribute('name') + ".gexf");
+        }
 
 
       }

@@ -221,6 +221,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         g.addEdge('n'+i, 'n'+j)
       }
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Clique '+order)
     return g
   }
 
@@ -232,6 +234,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         // No attributes
       })
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Stable '+order)
     return g
   }
 
@@ -247,6 +251,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       })
       g.addEdge('n0', 'n'+i)
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Star '+order)
     return g
   }
 
@@ -261,6 +267,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         g.addEdge('n'+i, 'n'+(i-1))
       }
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Chain '+order)
     return g
   }
 
@@ -276,6 +284,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     for (i=1; i<order; i++){
       g.addEdge('n'+i, 'n'+(i-1))
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Circle '+order)
     return g
   }
 
@@ -314,6 +324,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       g.addEdge('r'+rank+'c'+rank, 'r'+(rank-1)+'c'+rank)
       rank++
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Square Lattice '+g.order)
     return g
   }
 
@@ -341,6 +353,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       }
       rank++
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Triangular Lattice '+g.order)
     return g
   }
 
@@ -366,6 +380,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         }
       }
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Bridged Cliques '+g.order+'n '+cliques_count+'c '+bridges_count+'b')
     return g
   }
 
@@ -391,6 +407,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         g.addEdge('s'+s+'n0', 's'+j+'n0')
       }
     }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Bridged Stars '+g.order+'n '+stars_count+'s')
     return g
   }
 
@@ -433,6 +451,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       }
     }
 
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Bridged Lattices '+g.order+'n '+lattice_count+'l')
     return g
   }
 
@@ -470,6 +490,8 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       
     }
 
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'SBM '+block_count+' Blocks Pin='+p_in+' Pout='+p_out+' '+g.order+'n')
     return g
   }
 
