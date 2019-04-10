@@ -125,18 +125,22 @@ config(['$routeProvider', function($routeProvider) {
 
         graph.nodes().forEach(function(node) {
 
-          // Labels from ids
+          // Labels
           graph.nodes().forEach(function(nid){
+            // graph.setNodeAttribute(nid, 'label', graph.getNodeAttribute(nid, 'type') || '')
             graph.setNodeAttribute(nid, 'label', nid)
           })
 
           // Color
-          graph.updateNodeAttribute(node, 'color', function(color) {
-            if (CATEGORY)
-              return COLORS[graph.getNodeAttribute(node, CATEGORY)] || DEFAULT_NODE_COLOR;
-
-            return color || DEFAULT_NODE_COLOR;
-          });
+          graph.nodes().forEach(function(nid){
+            var type = graph.getNodeAttribute(nid, 'type')
+            if (type) {
+              graph.setNodeAttribute(nid, 'color', hashToColor(type))
+            } else {
+              graph.setNodeAttribute(nid, 'color', DEFAULT_NODE_COLOR)
+            }
+          })
+          
 
           // Size
           graph.updateNodeAttribute(node, 'size', function(size) {
@@ -218,4 +222,25 @@ config(['$routeProvider', function($routeProvider) {
       }
     }
   }
+
+  function hashToColor(text) {
+    var seed1 = hashToNumber(text)
+    var seed2 = hashToNumber(''+seed1)
+    var seed3 = hashToNumber(''+seed2)
+    var hExtent = [0, 360]
+    var sExtent = [0.7, 0.8]
+    var lExtent = [0.5, 0.7]
+    return d3.color(d3.hsl(
+      hExtent[0]+seed1*(hExtent[1]-hExtent[0]),
+      sExtent[0]+seed2*(sExtent[1]-sExtent[0]),
+      lExtent[0]+seed3*(lExtent[1]-lExtent[0])
+    )).toString()
+  }
+
+  function hashToNumber(text) {
+    var seed = Math.abs((Array.from(text+text+text+text+text+text+text+text+text, c => c.charCodeAt(0)).reduce((a, b) => ((a << 5) - a) + b) | 0) & 0xffffffff) / Math.pow(2, 32) 
+    seed = Math.pow(1/seed, Math.PI)
+    return seed%1000 / 1000
+  }
 })
+

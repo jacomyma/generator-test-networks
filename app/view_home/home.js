@@ -529,5 +529,4 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     return g
   }
 
-
 })
