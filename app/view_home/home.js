@@ -26,7 +26,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     $scope.g = undefined
     $timeout(function(){
       $scope.g = generate($scope.generator, $scope.nodes)
-    })
+    }, 500)
   }
 
   function generate(generator_type, min_order) {
