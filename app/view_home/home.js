@@ -89,29 +89,28 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         return generateBridgedLattices(min_order, 2)
         break;
 
+      case 'lattice5-bridge':
+        return generateBridgedLattices(min_order, 5)
+        break;
+
       case 'random-75':
-        var p_in = 0.75
-        return generateSBM(min_order, 1, p_in, 0)
+        return random(min_order, 0.75)
         break;
 
       case 'random-50':
-        var p_in = 0.50
-        return generateSBM(min_order, 1, p_in, 0)
+        return random(min_order, 0.50)
         break;
 
       case 'random-25':
-        var p_in = 0.25
-        return generateSBM(min_order, 1, p_in, 0)
+        return random(min_order, 0.25)
         break;
 
       case 'random-5':
-        var p_in = 0.05
-        return generateSBM(min_order, 1, p_in, 0)
+        return random(min_order, 0.05)
         break;
 
       case 'random-1':
-        var p_in = 0.01
-        return generateSBM(min_order, 1, p_in, 0)
+        return random(min_order, 0.01)
         break;
 
       case 'SBM2-99-999':
@@ -223,6 +222,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Clique '+order)
+    g.setAttribute('description', 'All nodes are connected together')
     return g
   }
 
@@ -236,6 +236,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Stable '+order)
+    g.setAttribute('description', 'There are no links')
     return g
   }
 
@@ -253,6 +254,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Star '+order)
+    g.setAttribute('description', 'One center nodes and the other nodes are only connected to that one')
     return g
   }
 
@@ -269,6 +271,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Chain '+order)
+    g.setAttribute('description', 'Each node has two neighbors except at each end of the chain')
     return g
   }
 
@@ -286,6 +289,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Circle '+order)
+    g.setAttribute('description', 'Each node has two neighbors, in a circular chain')
     return g
   }
 
@@ -326,6 +330,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Square Lattice '+g.order)
+    g.setAttribute('description', 'A grid of nodes. Except at the border, each node has four neighbors.')
     return g
   }
 
@@ -355,6 +360,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Triangular Lattice '+g.order)
+    g.setAttribute('description', 'A grid of triangles. Except at the border, each node has six neighbors.')
     return g
   }
 
@@ -382,6 +388,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Bridged Cliques '+g.order+'n '+cliques_count+'c '+bridges_count+'b')
+    g.setAttribute('description', cliques_count+' cliques linked by '+bridges_count+' bridge'+((bridges_count>1)?('s'):(''))+' between each pair')
     return g
   }
 
@@ -409,6 +416,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     }
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Bridged Stars '+g.order+'n '+stars_count+'s')
+    g.setAttribute('description', stars_count+' stars linked by bridges between their cores')
     return g
   }
 
@@ -453,6 +461,28 @@ angular.module('gentestnet.view_home', ['ngRoute'])
 
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Bridged Lattices '+g.order+'n '+lattice_count+'l')
+    g.setAttribute('description', lattice_count+' triangular lattices linked by bridges at one of their corners')
+    return g
+  }
+
+  function random(order, p) {
+    var b, c, i, j
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
+    for (i=0; i<order; i++) {
+      g.addNode('n'+i, {
+        // No attribute
+      })
+    }
+    for (i=0; i<order; i++) {
+      for (j=0; j<i; j++) {
+        if (Math.random() < p) {
+          g.addEdge('n'+i, 'n'+j)
+        }
+      }
+    }
+    g.setAttribute('creator', 'Generator of test networks')
+    g.setAttribute('name', 'Random P='+(Math.round(1000000*p)/1000000)+' '+g.order+'n')
+    g.setAttribute('description', 'Nodes connected with a probability of '+(Math.round(1000000*p)/1000000))
     return g
   }
 
@@ -492,6 +522,7 @@ angular.module('gentestnet.view_home', ['ngRoute'])
 
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'SBM '+block_count+' Blocks Pin='+(Math.round(1000000*p_in)/1000000)+' Pout='+(Math.round(1000000*p_out)/1000000)+' '+g.order+'n')
+    g.setAttribute('description', block_count+' blocks with random links with controled probability. Probability of link inside a block: '+(Math.round(1000000*p_in)/1000000)+'. Probability of link from block to block: '+(Math.round(1000000*p_out)/1000000)+'. See stochastic block model (SBM).')
     return g
   }
 
