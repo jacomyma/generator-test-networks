@@ -331,6 +331,15 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       g.addEdge('r'+rank+'c'+rank, 'r'+(rank-1)+'c'+rank)
       rank++
     }
+    g.nodes().forEach(function(nid){
+      if (g.degree(nid) == 4) {
+        g.setNodeAttribute(nid, 'type', 'normal')
+      } else if (g.degree(nid) == 3) {
+        g.setNodeAttribute(nid, 'type', 'border')          
+      } else if (g.degree(nid) == 2) {
+        g.setNodeAttribute(nid, 'type', 'corner')          
+      }
+    })
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Square Lattice '+g.order)
     g.setAttribute('description', 'A grid of nodes. Except at the border, each node has four neighbors.')
@@ -361,6 +370,15 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       }
       rank++
     }
+    g.nodes().forEach(function(nid){
+      if (g.degree(nid) == 6) {
+        g.setNodeAttribute(nid, 'type', 'normal')
+      } else if (g.degree(nid) == 4) {
+        g.setNodeAttribute(nid, 'type', 'border')          
+      } else if (g.degree(nid) == 2) {
+        g.setNodeAttribute(nid, 'type', 'corner')          
+      }
+    })
     g.setAttribute('creator', 'Generator of test networks')
     g.setAttribute('name', 'Triangular Lattice '+g.order)
     g.setAttribute('description', 'A grid of triangles. Except at the border, each node has six neighbors.')

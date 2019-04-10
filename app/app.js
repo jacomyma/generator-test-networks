@@ -225,11 +225,11 @@ config(['$routeProvider', function($routeProvider) {
 
   function hashToColor(text) {
     var seed1 = hashToNumber(text)
-    var seed2 = hashToNumber(''+seed1)
-    var seed3 = hashToNumber(''+seed2)
+    var seed2 = hashToNumber(''+(1/seed1))
+    var seed3 = hashToNumber(''+(1/seed2))
     var hExtent = [0, 360]
     var sExtent = [0.7, 0.8]
-    var lExtent = [0.5, 0.7]
+    var lExtent = [0.5, 0.6]
     return d3.color(d3.hsl(
       hExtent[0]+seed1*(hExtent[1]-hExtent[0]),
       sExtent[0]+seed2*(sExtent[1]-sExtent[0]),
@@ -238,9 +238,15 @@ config(['$routeProvider', function($routeProvider) {
   }
 
   function hashToNumber(text) {
-    var seed = Math.abs((Array.from(text+text+text+text+text+text+text+text+text, c => c.charCodeAt(0)).reduce((a, b) => ((a << 5) - a) + b) | 0) & 0xffffffff) / Math.pow(2, 32) 
-    seed = Math.pow(1/seed, Math.PI)
-    return seed%1000 / 1000
+    var seed = Math.abs((Array.from(text, c => c.charCodeAt(0)).reduce((a, b) => ((a << 5) - a) + b) | 0) & 0xffffffff) / Math.pow(2, 32) 
+    var i
+    for(i=0; i<3; i++) {
+      seed = 1/seed
+      seed /= Math.pow(10, Math.ceil(Math.log(seed/10)))
+      seed *= 1000000000
+      seed = seed%1
+    }
+    return seed
   }
 })
 
