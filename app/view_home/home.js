@@ -206,6 +206,14 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         return generateSBM(min_order, 5, p_in, 1-p_in)
         break;
 
+      case 'recursiveClusters3':
+        return generateRecursiveClusters(min_order, 3)
+        break;
+
+      case 'recursiveClusters5':
+        return generateRecursiveClusters(min_order, 5)
+        break;
+
       default:
         alert("This generator is not yet implemented")
         break;
@@ -546,5 +554,78 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     g.setAttribute('description', block_count+' blocks with random links with controled probability. Probability of link inside a block: '+(Math.round(1000000*p_in)/1000000)+'. Probability of link from block to block: '+(Math.round(1000000*p_out)/1000000)+'. See stochastic block model (SBM).')
     return g
   }
+
+  function generateRecursiveClusters(min_order, cluster_count) {
+    var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
+    var c, d, i, j, g_temp, pairs
+
+    if (min_order <= cluster_count) {
+      for (c=0; c<cluster_count; c++) {
+        g.addNode('n'+c)
+      }
+      for (i=0; i<g.order; i++) {
+        for (j=0; j<i; j++) {
+          g.addEdge('n'+i, 'n'+j)
+        }
+      }
+      return g
+    } else {
+      for (c=0; c<cluster_count; c++) {
+        g_temp = generateRecursiveClusters(Math.ceil(min_order/cluster_count), cluster_count)
+
+        // Add g_temp to g
+        g_temp.nodes().forEach(function(nid){
+          g.addNode(nid+'-'+c)
+        })
+        g_temp.edges().forEach(function(eid){
+          g.addEdge(g_temp.source(eid)+'-'+c, g_temp.target(eid)+'-'+c)
+        })        
+      }
+      var nodeIds = g_temp.nodes()
+      var currentDensity = g_temp.size/(g_temp.order * (g_temp.order - 1))
+      for (c=0; c<cluster_count; c++) {
+        for (d=0; d<c; d++) {
+          pairs = []
+          nodeIds.forEach(function(ni){
+            nodeIds.forEach(function(nj){
+              pairs.push([ni+'-'+c, nj+'-'+d])
+            })
+          })
+          shuffle(pairs)
+          var d_out = 0.1 * currentDensity
+          var inter_edges_count = d_out*pairs.length
+          g.addEdge(pairs[0][0], pairs[0][1])
+          for (i=1; i<inter_edges_count; i++) {
+            g.addEdge(pairs[i][0], pairs[i][1])
+          }
+        }
+      }
+      g.setAttribute('creator', 'Generator of test networks')
+      g.setAttribute('name', 'Recursive Groups of '+cluster_count+' Clusters '+g.order+'n')
+      g.setAttribute('description', 'Recursive Groups of '+cluster_count+' Clusters with a decreasing link density from each cluster to each other cluster')
+      return g
+    }
+    
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+  }
+
+
 
 })
