@@ -52,12 +52,20 @@ angular.module('gentestnet.view_home', ['ngRoute'])
         return generateCircle(min_order)
         break;
 
-      case 'sqlattice':
-        return generateSquareLattice(min_order)
-        break;
-
       case 'trilattice':
         return generateTriangularLattice(min_order)
+        break;
+
+      case 'sqlattice':
+        return generateSquareLattice(min_order, 1)
+        break;
+
+      case 'sqlattice2':
+        return generateSquareLattice(min_order, 2)
+        break;
+
+      case 'sqlattice5':
+        return generateSquareLattice(min_order, 5)
         break;
 
       case 'clique2-bridge1':
@@ -304,53 +312,77 @@ angular.module('gentestnet.view_home', ['ngRoute'])
     return g
   }
 
-  function generateSquareLattice(min_order) {
+  function generateSquareLattice(min_order, grid_scale) {
     var g = new Graph({multi: false, type:'undirected', allowSelfLoops: false})
     g.addNode('r0c0', {
       row: 0,
-      col: 0
+      col: 0,
+      type: 'intersection'
     })
     var rank = 1
-    while (g.order < min_order) {
+    while (g.order < min_order || (rank-1)%grid_scale != 0) {
       var i
       for (i=0; i<rank; i++) {
-        g.addNode('r'+rank+'c'+i, {
-          row: rank,
-          col: i
-        })
-        g.addEdge('r'+rank+'c'+i, 'r'+(rank-1)+'c'+i)
-
-        g.addNode('r'+i+'c'+rank, {
-          row: i,
-          col: rank
-        })
-        g.addEdge('r'+i+'c'+rank, 'r'+i+'c'+(rank-1))
-
-        if (i>0) {
-          g.addEdge('r'+rank+'c'+i, 'r'+rank+'c'+(i-1))
-          g.addEdge('r'+i+'c'+rank, 'r'+(i-1)+'c'+rank)          
+        if (rank%grid_scale == 0 || i%grid_scale == 0) {
+          g.addNode('r'+rank+'c'+i, {
+            row: rank,
+            col: i,
+            type: (rank%grid_scale==0 && i%grid_scale==0) ? ('intersection') : ('connexion')
+          })
+          g.addNode('r'+i+'c'+rank, {
+            row: i,
+            col: rank,
+            type: (rank%grid_scale==0 && i%grid_scale==0) ? ('intersection') : ('connexion')
+          })
+          if ((rank-1)%grid_scale == 0 || i%grid_scale == 0) {
+            g.addEdge('r'+rank+'c'+i, 'r'+(rank-1)+'c'+i)
+            g.addEdge('r'+i+'c'+rank, 'r'+i+'c'+(rank-1))
+          }
+          if (i>0 && (rank%grid_scale == 0 || (i-1)%grid_scale == 0)) {
+            g.addEdge('r'+rank+'c'+i, 'r'+rank+'c'+(i-1))
+            g.addEdge('r'+i+'c'+rank, 'r'+(i-1)+'c'+rank)          
+          }
         }
       }
-      g.addNode('r'+i+'c'+rank, {
-        row: rank,
-        col: rank
-      })
-      g.addEdge('r'+rank+'c'+rank, 'r'+rank+'c'+(rank-1))
-      g.addEdge('r'+rank+'c'+rank, 'r'+(rank-1)+'c'+rank)
+
+      if (rank%grid_scale == 0) {
+        g.addNode('r'+rank+'c'+rank, {
+          row: rank,
+          col: rank,
+          type: 'intersection'
+        })
+        g.addEdge('r'+rank+'c'+rank, 'r'+rank+'c'+(rank-1))
+        g.addEdge('r'+rank+'c'+rank, 'r'+(rank-1)+'c'+rank)
+      }
       rank++
     }
-    g.nodes().forEach(function(nid){
-      if (g.degree(nid) == 4) {
-        g.setNodeAttribute(nid, 'type', 'normal')
-      } else if (g.degree(nid) == 3) {
-        g.setNodeAttribute(nid, 'type', 'border')          
-      } else if (g.degree(nid) == 2) {
-        g.setNodeAttribute(nid, 'type', 'corner')          
-      }
-    })
-    g.setAttribute('creator', 'Generator of test networks')
-    g.setAttribute('name', 'Square Lattice '+g.order)
-    g.setAttribute('description', 'A grid of nodes. Except at the border, each node has four neighbors.')
+    if (grid_scale==1) {
+      g.nodes().forEach(function(nid){
+        if (g.degree(nid) == 4) {
+          g.setNodeAttribute(nid, 'type', 'normal')
+        } else if (g.degree(nid) == 3) {
+          g.setNodeAttribute(nid, 'type', 'border')          
+        } else if (g.degree(nid) == 2) {
+          g.setNodeAttribute(nid, 'type', 'corner')          
+        }
+      })
+      g.setAttribute('creator', 'Generator of test networks')
+      g.setAttribute('name', 'Square Lattice '+g.order)
+      g.setAttribute('description', 'A grid of nodes. Except at the border, each node has four neighbors.')
+    } else {
+      g.nodes().forEach(function(nid){
+        if (g.getNodeAttribute(nid, 'type') == 'intersection') {
+          if (g.degree(nid) == 3) {
+            g.setNodeAttribute(nid, 'type', 'intersection-border')          
+          } else if (g.degree(nid) == 2) {
+            g.setNodeAttribute(nid, 'type', 'intersection-corner')          
+          }
+        }
+      })
+      g.setAttribute('creator', 'Generator of test networks')
+      g.setAttribute('name', 'Square Lattice Length='+grid_scale+' '+g.order)
+      g.setAttribute('description', 'A grid of nodes connected by paths of length '+grid_scale)
+    }
     return g
   }
 
@@ -382,9 +414,9 @@ angular.module('gentestnet.view_home', ['ngRoute'])
       if (g.degree(nid) == 6) {
         g.setNodeAttribute(nid, 'type', 'normal')
       } else if (g.degree(nid) == 4) {
-        g.setNodeAttribute(nid, 'type', 'border')          
+        g.setNodeAttribute(nid, 'type', 'border')
       } else if (g.degree(nid) == 2) {
-        g.setNodeAttribute(nid, 'type', 'corner')          
+        g.setNodeAttribute(nid, 'type', 'corner')
       }
     })
     g.setAttribute('creator', 'Generator of test networks')
